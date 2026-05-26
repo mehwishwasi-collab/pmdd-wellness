@@ -12,14 +12,23 @@
 <title>PMDD Wellness</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow-x:hidden;background:#f5f5f3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px}
+html,body{height:100%;background:#f5f5f3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;overflow:hidden}
+.app{max-width:430px;margin:0 auto;height:100vh;display:flex;flex-direction:column;background:#f5f5f3}
+.page{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(80px + env(safe-area-inset-bottom))}
+.page.hidden{display:none}
 
-.app{max-width:430px;margin:0 auto;background:#f5f5f3;min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid #ebebeb;display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:100}
+.nav-btn{flex:1;padding:10px 4px 8px;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all 0.15s}
+.nav-btn .nav-icon{font-size:22px;line-height:1}
+.nav-btn .nav-label{font-size:10px;font-weight:600;letter-spacing:0.04em;color:#bbb;transition:color 0.15s}
+.nav-btn.active .nav-label{color:#1a1a1a}
+.nav-btn.active .nav-icon{transform:scale(1.1)}
 
 /* HERO */
 .hero{background:#fff;padding:calc(env(safe-area-inset-top) + 20px) 16px 16px;border-bottom:1px solid #ebebeb}
 .hero-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
-.hero-day{font-size:48px;font-weight:700;line-height:1;color:#1a1a1a;letter-spacing:-2px}
+.hero-day{font-size:52px;font-weight:700;line-height:1;color:#1a1a1a;letter-spacing:-2px}
 .hero-day-label{font-size:12px;color:#888;margin-top:2px}
 .hero-right{text-align:right;padding-top:4px}
 .phase-chip{display:inline-block;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;letter-spacing:0.02em}
@@ -31,8 +40,7 @@ html,body{height:100%;overflow-x:hidden;background:#f5f5f3;font-family:-apple-sy
 .phase-seg{height:5px;flex:1;transition:flex 0.3s}
 .hero-summary{font-size:13px;color:#555;line-height:1.65;background:#f9f9f7;border-radius:10px;padding:11px 13px}
 .hero-summary strong{color:#1a1a1a;font-weight:600}
-.period-btn{width:100%;margin-top:10px;padding:10px;border-radius:10px;border:1px solid #e5e5e5;background:#fff;font-size:12px;color:#888;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px}
-.period-btn:active{background:#f5f5f3}
+.period-btn{width:100%;margin-top:10px;padding:10px;border-radius:10px;border:1px solid #e5e5e5;background:#fff;font-size:12px;color:#888;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
 .prog-wrap{height:3px;background:#f0f0f0;border-radius:2px;margin-top:10px}
 .prog-fill{height:3px;border-radius:2px;background:#1a1a1a;transition:width 0.4s}
 
@@ -41,8 +49,9 @@ html,body{height:100%;overflow-x:hidden;background:#f5f5f3;font-family:-apple-sy
 .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .section-title{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#aaa}
 .section-meta{font-size:11px;color:#bbb}
+.footer-space{height:16px}
 
-/* WORKOUT */
+/* WORKOUT CARDS */
 .workout-card{background:#fff;border:1px solid #ebebeb;border-radius:14px;overflow:hidden;margin-bottom:8px}
 .workout-head{padding:13px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #f0f0f0}
 .workout-icon{font-size:26px}
@@ -55,18 +64,14 @@ html,body{height:100%;overflow-x:hidden;background:#f5f5f3;font-family:-apple-sy
 .ex-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .ex-name{font-size:13px;color:#1a1a1a;font-weight:500}
 .ex-meta{font-size:11px;color:#999;margin-top:1px}
-.ex-equip{background:#f5f5f3;padding:2px 7px;border-radius:5px;font-size:10px;color:#888;white-space:nowrap}
+.ex-equip{background:#f5f5f3;padding:2px 7px;border-radius:5px;font-size:10px;color:#888;white-space:nowrap;flex-shrink:0}
 .cardio-row{border-top:1px solid #f0f0f0;padding:11px 14px;display:flex;align-items:center;gap:10px}
 .cardio-text{flex:1;font-size:12px;color:#888;line-height:1.5}
 .cardio-title{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:2px}
-.rest-card{background:#fff;border:1px solid #ebebeb;border-radius:14px;padding:20px;text-align:center}
-.rest-icon{font-size:36px;margin-bottom:10px}
-.rest-title{font-size:17px;font-weight:600;color:#1a1a1a;margin-bottom:6px}
-.rest-note{font-size:13px;color:#888;line-height:1.6;margin-bottom:14px}
-.rest-activities{background:#f9f9f7;border-radius:10px;padding:12px;text-align:left}
-.rest-act{font-size:13px;color:#666;padding:4px 0;display:flex;align-items:center;gap:8px}
+.check-circle{width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;font-size:13px}
+.check-circle.done{background:#dcfce7;border-color:#86efac;color:#16a34a}
 
-/* MEDS */
+/* MED CARDS */
 .med-stack{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
 .med-block{background:#fff;border:1px solid #ebebeb;border-radius:14px;overflow:hidden;transition:border-color 0.2s}
 .med-block.done-block{border-color:#86efac}
@@ -80,42 +85,99 @@ html,body{height:100%;overflow-x:hidden;background:#f5f5f3;font-family:-apple-sy
 .d-rx{background:#ef4444}.d-stim{background:#7c3aed}.d-supp{background:#16a34a}.d-iron{background:#d97706}.d-glp{background:#2563eb}.d-mag{background:#7c3aed}
 .med-text{font-size:13px;color:#1a1a1a;font-weight:500;line-height:1.4}
 .med-sub{font-size:11px;color:#999;margin-top:1px}
-.med-warn{font-size:11px;color:#d97706;padding:0 14px 10px;line-height:1.55;border-top:1px solid #fef3c7;padding-top:8px;background:#fffbeb}
+.med-warn{font-size:11px;color:#d97706;padding:8px 14px;line-height:1.55;border-top:1px solid #fef3c7;background:#fffbeb}
 .med-warn.critical{color:#dc2626;background:#fef2f2;border-top-color:#fecaca}
 .wait-row{display:flex;align-items:center;gap:8px;padding:3px 0}
-.wait-line{flex:1;height:1px;background:#ebebeb;border-top:1px dashed #e0e0e0}
+.wait-line{flex:1;height:0;border-top:1px dashed #e0e0e0}
 .wait-text{font-size:10px;color:#bbb;white-space:nowrap}
-
 .priority-alert{background:#fce8e8;border:1px solid #fca5a5;border-radius:10px;padding:11px 13px;font-size:12px;color:#7f1d1d;line-height:1.65;margin-bottom:8px}
 .priority-alert strong{font-weight:600}
 
-.check-circle{width:26px;height:26px;border-radius:50%;border:1.5px solid #e0e0e0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;font-size:13px}
-.check-circle.done{background:#dcfce7;border-color:#86efac;color:#16a34a}
+/* CALENDAR PAGE */
+.cal-header{background:#fff;padding:calc(env(safe-area-inset-top) + 16px) 16px 12px;border-bottom:1px solid #ebebeb;position:sticky;top:0;z-index:10}
+.cal-title{font-size:18px;font-weight:700;color:#1a1a1a;letter-spacing:-0.3px;margin-bottom:12px}
+.cal-cycle-bar{display:flex;gap:3px;margin-bottom:10px}
+.cal-seg{height:6px;border-radius:3px;cursor:pointer;transition:all 0.15s;position:relative}
+.cal-seg:active{opacity:0.7}
+.cal-legend{display:flex;gap:12px}
+.cal-legend-item{display:flex;align-items:center;gap:4px;font-size:10px;color:#999}
+.cal-legend-dot{width:8px;height:8px;border-radius:50%}
+.day-cards-grid{padding:12px;display:flex;flex-direction:column;gap:8px}
+.day-card{background:#fff;border:1px solid #ebebeb;border-radius:14px;overflow:hidden;cursor:pointer;transition:all 0.15s}
+.day-card:active{background:#f9f9f7}
+.day-card.today-card{border-color:#1a1a1a;border-width:2px}
+.day-card.selected-card{border-color:#7c3aed;border-width:2px}
+.day-card-head{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.day-card-num{font-size:22px;font-weight:700;color:#1a1a1a;min-width:36px}
+.day-card-info{flex:1}
+.day-card-phase{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:3px}
+.day-card-workout{font-size:12px;color:#888}
+.day-card-today-badge{font-size:10px;font-weight:700;background:#1a1a1a;color:#fff;padding:2px 8px;border-radius:10px;letter-spacing:0.05em}
+.day-detail{background:#f9f9f7;border-top:1px solid #f0f0f0;padding:12px 14px;display:none}
+.day-detail.open{display:block}
+.day-detail-section{margin-bottom:10px}
+.day-detail-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:6px}
+.day-detail-content{font-size:12px;color:#555;line-height:1.65}
+.day-detail-content strong{color:#1a1a1a;font-weight:600}
+.ex-mini{font-size:12px;color:#555;padding:3px 0;display:flex;justify-content:space-between}
+.ex-mini-equip{font-size:10px;color:#bbb;background:#efefef;padding:1px 6px;border-radius:4px}
 
-.footer-space{height:32px}
+/* TIMER PAGE */
+.timer-page{padding:calc(env(safe-area-inset-top) + 20px) 16px 0;background:#fff;min-height:100%}
+.timer-title{font-size:18px;font-weight:700;color:#1a1a1a;letter-spacing:-0.3px;margin-bottom:4px}
+.timer-sub{font-size:12px;color:#aaa;margin-bottom:28px}
+.timer-circle{width:200px;height:200px;border-radius:50%;border:3px solid #1a1a1a;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;background:#fff;transition:border-color 0.3s}
+.timer-circle.running{border-color:#7c3aed}
+.timer-circle.finished{border-color:#16a34a}
+.timer-display{font-size:54px;font-weight:300;font-family:ui-monospace,monospace;color:#1a1a1a;letter-spacing:-1px}
+.timer-done-msg{text-align:center;font-size:14px;font-weight:600;color:#16a34a;margin-bottom:12px;min-height:22px}
+.timer-btns{display:flex;gap:10px;justify-content:center;margin-bottom:20px}
+.timer-btn-main{padding:12px 32px;border-radius:24px;border:none;background:#1a1a1a;color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.15s}
+.timer-btn-main:active{opacity:0.8}
+.timer-btn-main.pause-mode{background:#fce8e8;color:#8b1f1f}
+.timer-btn-reset{padding:12px 20px;border-radius:24px;border:1px solid #e5e5e5;background:#fff;font-size:14px;color:#888;cursor:pointer}
+.timer-presets{display:flex;gap:8px;justify-content:center;margin-bottom:20px}
+.preset-btn{padding:9px 20px;border-radius:20px;border:1px solid #e5e5e5;background:#fff;font-size:13px;color:#888;cursor:pointer;transition:all 0.15s;font-weight:500}
+.preset-btn.active{background:#1a1a1a;border-color:#1a1a1a;color:#fff}
+.timer-tip{background:#f9f9f7;border-radius:12px;padding:14px;font-size:12px;color:#888;line-height:1.7;margin:0 0 16px}
+.timer-tip strong{color:#1a1a1a;font-weight:600}
 
 /* SETUP */
 .setup{background:#fff;min-height:100vh;padding:calc(env(safe-area-inset-top) + 32px) 20px 32px;display:flex;flex-direction:column}
-.setup-logo{font-size:32px;margin-bottom:6px}
-.setup-title{font-size:24px;font-weight:700;color:#1a1a1a;letter-spacing:-0.5px;margin-bottom:8px}
+.setup-logo{font-size:36px;margin-bottom:8px}
+.setup-title{font-size:26px;font-weight:700;color:#1a1a1a;letter-spacing:-0.5px;margin-bottom:8px}
 .setup-sub{font-size:14px;color:#888;line-height:1.65;margin-bottom:28px}
 .setup-label{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#bbb;margin-bottom:10px}
 .setup-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:28px}
-.setup-btn{padding:9px 2px;border-radius:8px;border:1px solid #ebebeb;background:#f9f9f7;cursor:pointer;font-size:12px;color:#888;text-align:center;transition:all 0.15s;-webkit-appearance:none}
+.setup-btn{padding:9px 2px;border-radius:8px;border:1px solid #ebebeb;background:#f9f9f7;cursor:pointer;font-size:12px;color:#888;text-align:center;transition:all 0.15s}
 .setup-btn.sel{background:#1a1a1a;border-color:#1a1a1a;color:#fff;font-weight:700}
-.setup-submit{width:100%;padding:14px;border-radius:12px;border:none;background:#1a1a1a;color:#fff;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:0.01em;-webkit-appearance:none}
-.setup-submit:active{opacity:0.85}
+.setup-submit{width:100%;padding:14px;border-radius:12px;border:none;background:#1a1a1a;color:#fff;font-size:15px;font-weight:600;cursor:pointer}
 </style>
 </head>
 <body>
 <div class="app" id="app">
-  <div id="mainView" style="display:none"></div>
   <div id="setupView"></div>
+  <div id="todayPage" class="page hidden"></div>
+  <div id="calPage" class="page hidden"></div>
+  <div id="timerPage" class="page hidden"></div>
+  <nav class="bottom-nav" id="bottomNav" style="display:none">
+    <button class="nav-btn active" onclick="switchPage('today')" id="nav-today">
+      <span class="nav-icon">🌸</span>
+      <span class="nav-label">Today</span>
+    </button>
+    <button class="nav-btn" onclick="switchPage('cal')" id="nav-cal">
+      <span class="nav-icon">📅</span>
+      <span class="nav-label">Cycle</span>
+    </button>
+    <button class="nav-btn" onclick="switchPage('timer')" id="nav-timer">
+      <span class="nav-icon">⏱</span>
+      <span class="nav-label">Timer</span>
+    </button>
+  </nav>
 </div>
 
 <script>
-const STORAGE_KEY='pmdd_v2';
-
+const STORAGE_KEY='pmdd_v3';
 function load(){try{const r=localStorage.getItem(STORAGE_KEY);return r?JSON.parse(r):null}catch(e){return null}}
 function save(s){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(s))}catch(e){}}
 function todayStr(){return new Date().toISOString().split('T')[0]}
@@ -124,52 +186,56 @@ function getCycleDay(ps){return Math.max(1,daysBetween(ps,todayStr())+1)}
 function getPhase(d){if(d<=5)return'period';if(d<=14)return'follicular';return'luteal'}
 
 const WORKOUT_SPLIT=[
-  {label:'Rest',icon:'🛁',type:'rest',notes:'Recovery is when muscle is built. Non-negotiable.',activities:['No gym today','Meal prep + protein tracking','Hydrate well — especially important in luteal phase']},
-  {label:'Lower A',icon:'🦵',type:'workout',focus:'Quads + Hamstrings',brain:'Compound lower body — BDNF spike',exercises:[{name:'Goblet squat',sets:4,reps:10,equip:'DB'},{name:'DB Romanian deadlift',sets:3,reps:10,equip:'DB'},{name:'Reverse lunge',sets:3,reps:12,equip:'DB'}],bonus:{name:'Step-ups',sets:2,reps:'12 each leg',equip:'DB'},notes:'Reverse lunge = more knee-friendly. Side lunge = adductors + glutes.'},
-  {label:'Upper A',icon:'💪',type:'workout',focus:'Back + Shoulders (Pull)',brain:'Resistance — dopamine + norepinephrine',exercises:[{name:'Lat pulldown',sets:4,reps:10,equip:'Cable'},{name:'DB shoulder press',sets:3,reps:10,equip:'DB'},{name:'Cable row',sets:3,reps:12,equip:'Cable'}],bonus:null,notes:'Pull focus. Upper back protects posture long term.'},
+  {label:'Rest',icon:'🛁',type:'rest',notes:'Recovery is when muscle is built. Non-negotiable.',activities:['No gym today','Meal prep + protein tracking','Hydrate well']},
+  {label:'Lower A',icon:'🦵',type:'workout',focus:'Quads + Hamstrings',brain:'Compound lower body → BDNF spike',exercises:[{name:'Goblet squat',sets:4,reps:10,equip:'DB'},{name:'DB Romanian deadlift',sets:3,reps:10,equip:'DB'},{name:'Reverse lunge',sets:3,reps:12,equip:'DB'}],bonus:{name:'Step-ups',sets:2,reps:'12 each',equip:'DB'},notes:'Reverse lunge = more knee-friendly.'},
+  {label:'Upper A',icon:'💪',type:'workout',focus:'Back + Shoulders',brain:'Resistance → dopamine + norepinephrine',exercises:[{name:'Lat pulldown',sets:4,reps:10,equip:'Cable'},{name:'DB shoulder press',sets:3,reps:10,equip:'DB'},{name:'Cable row',sets:3,reps:12,equip:'Cable'}],bonus:null,notes:'Pull focus. Upper back protects posture.'},
   {label:'Rest / Walk',icon:'🌿',type:'rest',notes:'Active recovery. Especially valuable in luteal phase.',activities:['20-min outdoor walk','Stretching or yoga','No gym required']},
-  {label:'Lower B',icon:'🍑',type:'workout',focus:'Glutes + Posterior Chain',brain:'Rhythmic movement — mood regulation',exercises:[{name:'Hip thrust',sets:4,reps:12,equip:'DB/Barbell'},{name:'Sumo DB deadlift',sets:3,reps:10,equip:'DB'},{name:'Leg press',sets:3,reps:12,equip:'Machine'}],bonus:null,notes:'Posterior chain. No quad overlap with Lower A.'},
-  {label:'Upper B',icon:'🤸',type:'workout',focus:'Push + Arms + Rear Delts',brain:'Consistent exertion — cortisol regulation',exercises:[{name:'Incline DB press',sets:3,reps:10,equip:'DB'},{name:'Tricep pushdown',sets:3,reps:12,equip:'Cable'},{name:'Bicep curl',sets:3,reps:12,equip:'DB'},{name:'DB rear delt fly',sets:3,reps:12,equip:'DB'}],bonus:null,notes:'Rear delt fly = same as face pulls, no cable needed.'},
-  {label:'Full Body',icon:'✨',type:'optional',focus:'Full Body — Optional',brain:'Full-body compound = highest neurological demand',exercises:[{name:'DB conventional deadlift',sets:3,reps:8,equip:'DB'},{name:'DB row',sets:3,reps:10,equip:'DB'},{name:'DB overhead press',sets:3,reps:10,equip:'DB'}],bonus:null,notes:'Optional. Adjust based on how you feel in your cycle.'}
+  {label:'Lower B',icon:'🍑',type:'workout',focus:'Glutes + Posterior Chain',brain:'Rhythmic movement → mood regulation',exercises:[{name:'Hip thrust',sets:4,reps:12,equip:'DB/Bar'},{name:'Sumo DB deadlift',sets:3,reps:10,equip:'DB'},{name:'Leg press',sets:3,reps:12,equip:'Machine'}],bonus:null,notes:'Posterior chain. No quad overlap with Lower A.'},
+  {label:'Upper B',icon:'🤸',type:'workout',focus:'Push + Arms + Rear Delts',brain:'Consistent exertion → cortisol regulation',exercises:[{name:'Incline DB press',sets:3,reps:10,equip:'DB'},{name:'Tricep pushdown',sets:3,reps:12,equip:'Cable'},{name:'Bicep curl',sets:3,reps:12,equip:'DB'},{name:'DB rear delt fly',sets:3,reps:12,equip:'DB'}],bonus:null,notes:'Rear delt fly = same as face pulls.'},
+  {label:'Full Body',icon:'✨',type:'optional',focus:'Full Body — Optional',brain:'Highest neurological demand',exercises:[{name:'DB conventional deadlift',sets:3,reps:8,equip:'DB'},{name:'DB row',sets:3,reps:10,equip:'DB'},{name:'DB overhead press',sets:3,reps:10,equip:'DB'}],bonus:null,notes:'Optional. Adjust based on your cycle.'}
 ];
 
 const PHASE_INFO={
   period:{chip:'Period phase',chipClass:'chip-period',
-    summary:'Estrogen and progesterone are at their lowest. <strong>Low energy is expected — not a failure.</strong> Prioritize iron-rich food with Vitamin C today. Magnesium tonight is essential. Rest is a valid workout choice.',
-    workoutNote:'Period phase — reduce weight 20–30% or rest. Your body is working hard.',noteClass:'note-warn'},
+    summary:'Estrogen and progesterone are at their lowest. <strong>Low energy is expected — not a failure.</strong> Prioritize iron-rich food with Vitamin C today. Magnesium tonight is essential.',
+    workoutNote:'Period phase — reduce weight 20–30% or rest. Your body is working hard.',noteClass:'note-warn',
+    calColor:'#f59e0b',calLabel:'Period'},
   follicular:{chip:'Follicular phase',chipClass:'chip-follicular',
-    summary:'Estrogen is rising — <strong>this is your highest energy and focus window.</strong> Vyvanse works best now. Push harder in workouts, tackle complex work. Brain and body are at peak receptiveness.',
-    workoutNote:'Follicular phase — your strongest window. Full weight, full effort.',noteClass:'note-ok'},
+    summary:'Estrogen is rising — <strong>this is your highest energy and focus window.</strong> Vyvanse works best now. Push harder in workouts, tackle complex tasks.',
+    workoutNote:'Follicular phase — your strongest window. Full weight, full effort.',noteClass:'note-ok',
+    calColor:'#84cc16',calLabel:'Follicular'},
   luteal:{chip:'Luteal phase',chipClass:'chip-luteal',
-    summary:'Progesterone peaks then crashes — <strong>PMDD symptoms emerge Days 20–28.</strong> Estrogen drop depletes dopamine, making ADHD harder. Vyvanse is essential now. Never skip magnesium. Reduce workout weight 20%.',
-    workoutNote:'Luteal phase — reduce weight 20%, focus on form. Showing up is the win.',noteClass:'note-warn'}
+    summary:'Progesterone peaks then crashes — <strong>PMDD symptoms emerge Days 20–28.</strong> Estrogen drop depletes dopamine. Vyvanse is essential now. Never skip magnesium.',
+    workoutNote:'Luteal phase — reduce weight 20%, focus on form. Showing up is the win.',noteClass:'note-warn',
+    calColor:'#f87171',calLabel:'Luteal'}
+};
+
+const PHASE_PROTOCOL={
+  period:{title:'Period phase protocol',notes:'Iron is being lost — prioritize iron-rich food with Vitamin C at every meal. Magnesium glycinate is essential for cramping. Rest or light movement only. Extra hydration.',highlights:['Iron + Vitamin C at every meal','Magnesium glycinate — never skip','Rest or reduce workout intensity 20–30%','Extra hydration']},
+  follicular:{title:'Follicular phase protocol',notes:'Your full protocol as normal. This is your best absorption window — supplements work better now. Push workouts hard.',highlights:['Full supplement stack as normal','Workout at full intensity','Best window for complex work and focus','Vyvanse most effective now']},
+  luteal:{title:'Luteal phase protocol',notes:'Never skip magnesium or calcium — these are your primary PMDD symptom modulators. Reduce sugar intake. Reduce workout weight by 20%.',highlights:['Magnesium glycinate — non-negotiable','Calcium split dose — do not skip','Reduce sugar and alcohol','Workout weight down 20%','Vyvanse essential — estrogen drop depletes dopamine']}
 };
 
 const MED_STEPS=[
   {id:'iron',time:'On waking — before anything else',icon:'⏰',
-   items:[{dot:'d-iron',text:'Ferrous bisglycinate 25mg',sub:'Thorne / Solgar Gentle Iron / Pure Encaps Iron-C'},{dot:'d-iron',text:'Vitamin C 250mg',sub:'Together with iron + full glass of water'}],
+   items:[{dot:'d-iron',text:'Ferrous bisglycinate 25mg',sub:'Thorne / Solgar Gentle Iron'},{dot:'d-iron',text:'Vitamin C 250mg',sub:'Together with iron + full glass of water'}],
    warn:'No food, no coffee, no other supplements yet.',warnType:'',after:'wait30'},
   {id:'rx',time:'30 min later — before breakfast',icon:'💊',
    items:[{dot:'d-rx',text:'Sertraline — your dose',sub:'Morning only — eliminates night sweats'},{dot:'d-stim',text:'Vyvanse — your dose',sub:'Take together, no negative interaction'}],
    warn:null,after:'wait15'},
   {id:'breakfast',time:'With breakfast',icon:'🌅',
-   items:[{dot:'d-supp',text:'Fish oil 1,280mg (650 EPA / 450 DHA)',sub:'Confirmed correct dose'},{dot:'d-supp',text:'Vitex (chasteberry)',sub:'Daily — not just luteal. 3–6 months for effect'},{dot:'d-supp',text:'Calcium 500mg (2 × 250mg)',sub:'Skip if heavy dairy breakfast'},{dot:'d-iron',text:'Vitamin D 2,000 IU',sub:'With fattiest meal. Lab: 35 → target 50–80'},{dot:'d-supp',text:'AG1 or Garden of Life multi',sub:'Never both same day'}],
+   items:[{dot:'d-supp',text:'Fish oil 1,280mg',sub:'650 EPA / 450 DHA'},{dot:'d-supp',text:'Vitex (chasteberry)',sub:'Daily — not just luteal. 3–6 months for effect'},{dot:'d-supp',text:'Calcium 500mg (2 × 250mg)',sub:'Skip if heavy dairy breakfast'},{dot:'d-iron',text:'Vitamin D 2,000 IU',sub:'With fattiest meal. Target: 50–80 ng/mL'},{dot:'d-supp',text:'AG1 or Garden of Life multi',sub:'Never both same day'}],
    warn:null,after:null},
   {id:'afternoon',time:'Afternoon — with lunch',icon:'☀️',
-   items:[{dot:'d-supp',text:'Calcium 500mg (2 × 250mg)',sub:'4–6 hrs from morning dose. Skip on heavy dairy days'}],
+   items:[{dot:'d-supp',text:'Calcium 500mg (2 × 250mg)',sub:'4–6 hrs from morning. Skip on heavy dairy days'}],
    warn:null,after:null},
   {id:'night',time:'30–60 min before bed',icon:'🌙',
-   items:[{dot:'d-mag',text:'Magnesium glycinate 360mg (3 × 120mg)',sub:'Never skip — especially Days 15–28. Never with calcium'}],
+   items:[{dot:'d-mag',text:'Magnesium glycinate 360mg (3 × 120mg)',sub:'Never skip Days 15–28. Never with calcium'}],
    warn:'Most important PMDD supplement. Do not skip.',warnType:'critical',after:null}
 ];
 
-function getLutealAlert(d){
-  if(d>=20)return'<strong>Days 20–28 — peak PMDD window.</strong> Magnesium tonight is non-negotiable. Estrogen is at its lowest — be kind to yourself. Vyvanse may feel less effective; this is the dopamine deficit, not failure.';
-  if(d>=15)return'<strong>Luteal phase started.</strong> Stay consistent with your full stack, especially magnesium and calcium. Reduce workout intensity if needed.';
-  return null;
-}
-
-let state=null,medChecked={},cardioChecked=false,setupDay=1;
+let state=null,medChecked={},cardioChecked=false,setupDay=1,currentPage='today',selectedCalDay=null;
+let timerDur=90,timerLeft=90,timerRunning=false,timerInterval=null;
 
 function init(){
   state=load();
@@ -178,51 +244,56 @@ function init(){
   if(state.lastDate!==today){state.lastDate=today;state.medChecked={};state.cardioChecked=false;save(state)}
   medChecked=state.medChecked||{};
   cardioChecked=state.cardioChecked||false;
-  showMain();
+  document.getElementById('bottomNav').style.display='flex';
+  switchPage('today');
+}
+
+function switchPage(page){
+  currentPage=page;
+  ['today','cal','timer'].forEach(p=>{
+    document.getElementById(p+'Page').classList.toggle('hidden',p!==page);
+    document.getElementById('nav-'+p).classList.toggle('active',p===page);
+  });
+  if(page==='today')renderToday();
+  if(page==='cal')renderCal();
+  if(page==='timer')renderTimer();
 }
 
 function showSetup(){
-  document.getElementById('mainView').style.display='none';
-  document.getElementById('setupView').style.display='block';
-  renderSetup();
-}
-
-function showMain(){
-  document.getElementById('setupView').style.display='none';
-  document.getElementById('mainView').style.display='block';
-  renderMain();
-}
-
-function renderSetup(){
+  document.getElementById('bottomNav').style.display='none';
+  ['today','cal','timer'].forEach(p=>document.getElementById(p+'Page').classList.add('hidden'));
   const opts=Array.from({length:35},(_,i)=>i+1).map(d=>
-    `<button class="setup-btn${d===setupDay?' sel':''}" onclick="pickSetupDay(${d})">${d}</button>`
-  ).join('');
+    `<button class="setup-btn${d===setupDay?' sel':''}" onclick="pickSetupDay(${d})">${d}</button>`).join('');
   document.getElementById('setupView').innerHTML=`
     <div class="setup">
       <div class="setup-logo">🌸</div>
       <div class="setup-title">PMDD Wellness</div>
-      <div class="setup-sub">Your daily protocol, workout, and cycle guide — all in one place.<br><br>To get started, what day of your cycle are you on today? Day 1 = first day of your period.</div>
+      <div class="setup-sub">Your daily protocol, workout, and cycle guide — all in one place.<br><br>What day of your cycle are you on today? Day 1 = first day of your period.</div>
       <div class="setup-label">I am on cycle day</div>
       <div class="setup-grid" id="setupGrid">${opts}</div>
       <button class="setup-submit" onclick="submitSetup()">Start tracking</button>
     </div>`;
 }
 
-function pickSetupDay(d){
-  setupDay=d;
-  document.querySelectorAll('.setup-btn').forEach((b,i)=>b.classList.toggle('sel',i+1===d));
-}
+function pickSetupDay(d){setupDay=d;document.querySelectorAll('.setup-btn').forEach((b,i)=>b.classList.toggle('sel',i+1===d))}
 
 function submitSetup(){
-  const t=new Date();
-  const ps=new Date(t);
+  const t=new Date(),ps=new Date(t);
   ps.setDate(t.getDate()-(setupDay-1));
   state={periodStart:ps.toISOString().split('T')[0],lastDate:todayStr(),medChecked:{},cardioChecked:false};
   save(state);medChecked={};cardioChecked=false;
-  showMain();
+  document.getElementById('setupView').innerHTML='';
+  document.getElementById('bottomNav').style.display='flex';
+  switchPage('today');
 }
 
-function renderMain(){
+function getLutealAlert(d){
+  if(d>=20)return'<strong>Days 20–28 — peak PMDD window.</strong> Magnesium tonight is non-negotiable. Estrogen is at its lowest. Be kind to yourself.';
+  if(d>=15)return'<strong>Luteal phase started.</strong> Stay consistent — especially magnesium and calcium. Reduce workout intensity if needed.';
+  return null;
+}
+
+function renderToday(){
   const cycleDay=getCycleDay(state.periodStart);
   const phase=getPhase(cycleDay);
   const pi=PHASE_INFO[phase];
@@ -232,110 +303,224 @@ function renderMain(){
   const total=MED_STEPS.length;
   const pct=Math.round((done/total)*100);
   const alert=phase!=='follicular'?getLutealAlert(cycleDay):null;
-
   const segs=Array.from({length:28},(_,i)=>{
     const d=i+1,isNow=d===Math.min(cycleDay,28);
     const col=d<=5?'#f59e0b':d<=14?'#84cc16':'#f87171';
-    return`<div class="phase-seg" style="background:${col};opacity:${isNow?1:0.25};${isNow?'flex:2.5':''}"></div>`;
+    return`<div class="phase-seg" style="background:${col};opacity:${isNow?1:0.2};${isNow?'flex:2.5':''}"></div>`;
   }).join('');
 
   let workoutHTML='';
   if(workout.type==='rest'){
     workoutHTML=`<div class="workout-card">
       <div class="workout-head"><div class="workout-icon">${workout.icon}</div><div><div class="workout-title">${workout.label}</div><div class="workout-focus">${workout.notes}</div></div></div>
-      <div class="exercise-list">${workout.activities.map(a=>`<div class="rest-act">✓ ${a}</div>`).join('')}</div>
+      <div class="exercise-list">${workout.activities.map(a=>`<div class="ex-row"><div class="ex-name" style="font-size:13px;color:#555">✓ ${a}</div></div>`).join('')}</div>
     </div>`;
   } else {
     const exRows=workout.exercises.map(e=>`
-      <div class="ex-row">
-        <div><div class="ex-name">${e.name}</div><div class="ex-meta">${e.sets} sets × ${e.reps} reps</div></div>
-        <div class="ex-equip">${e.equip}</div>
-      </div>`).join('');
-    const bonusRow=workout.bonus?`<div class="ex-row" style="opacity:0.6">
-      <div><div class="ex-name" style="font-size:12px">+ ${workout.bonus.name} <span style="color:#bbb;font-weight:400">(if time)</span></div><div class="ex-meta">${workout.bonus.sets} × ${workout.bonus.reps}</div></div>
-      <div class="ex-equip">${workout.bonus.equip}</div></div>`:'';
+      <div class="ex-row"><div><div class="ex-name">${e.name}</div><div class="ex-meta">${e.sets} sets × ${e.reps} reps</div></div><div class="ex-equip">${e.equip}</div></div>`).join('');
+    const bonus=workout.bonus?`<div class="ex-row" style="opacity:0.55"><div><div class="ex-name" style="font-size:12px">+ ${workout.bonus.name} <span style="color:#ccc;font-weight:400">(if time)</span></div><div class="ex-meta">${workout.bonus.sets} × ${workout.bonus.reps}</div></div><div class="ex-equip">${workout.bonus.equip}</div></div>`:'';
     workoutHTML=`<div class="workout-card">
       <div class="workout-head"><div class="workout-icon">${workout.icon}</div><div><div class="workout-title">${workout.label}</div><div class="workout-focus">${workout.focus}</div></div></div>
       <div class="phase-workout-note ${pi.noteClass}">${pi.workoutNote}</div>
-      <div class="exercise-list">${exRows}${bonusRow}</div>
+      <div class="exercise-list">${exRows}${bonus}</div>
       <div class="cardio-row">
-        <button class="check-circle${cardioChecked?' done':''}" onclick="toggleCardio()">
-          ${cardioChecked?'✓':''}
-        </button>
+        <button class="check-circle${cardioChecked?' done':''}" onclick="toggleCardio()">${cardioChecked?'✓':''}</button>
         <div class="cardio-text"><div class="cardio-title">Cardio finisher</div>8 min incline walk (3.5mph / 10%) or 4 × 30s jump rope</div>
       </div>
     </div>`;
   }
 
-  const medsHTML=MED_STEPS.map((step,si)=>{
+  const medsHTML=MED_STEPS.map(step=>{
     const isDone=!!medChecked[step.id];
-    const itemsHTML=step.items.map(it=>`
-      <div class="med-row">
-        <div class="med-dot ${it.dot}"></div>
-        <div><div class="med-text">${it.text}</div><div class="med-sub">${it.sub}</div></div>
-      </div>`).join('');
-    const warnHTML=step.warn?`<div class="med-warn${step.warnType==='critical'?' critical':''}">${step.warn}</div>`:'';
-    const afterHTML=step.after==='wait30'?`<div class="wait-row"><div class="wait-line"></div><div class="wait-text">wait 30 min</div><div class="wait-line"></div></div>`:
-      step.after==='wait15'?`<div class="wait-row"><div class="wait-line"></div><div class="wait-text">wait 15 min then eat breakfast</div><div class="wait-line"></div></div>`:'';
-    return`
-      <div class="med-block${isDone?' done-block':''}">
-        <div class="med-block-head">
-          <span style="font-size:18px">${step.icon}</span>
-          <span class="med-time">${step.time}</span>
-          <button class="med-check${isDone?' done':''}" onclick="toggleMed('${step.id}')">${isDone?'✓':''}</button>
-        </div>
-        <div class="med-items-list">${itemsHTML}</div>
-        ${warnHTML}
-      </div>${afterHTML}`;
+    const items=step.items.map(it=>`<div class="med-row"><div class="med-dot ${it.dot}"></div><div><div class="med-text">${it.text}</div><div class="med-sub">${it.sub}</div></div></div>`).join('');
+    const warn=step.warn?`<div class="med-warn${step.warnType==='critical'?' critical':''}">${step.warn}</div>`:'';
+    const after=step.after==='wait30'?`<div class="wait-row"><div class="wait-line"></div><div class="wait-text">wait 30 min</div><div class="wait-line"></div></div>`:
+      step.after==='wait15'?`<div class="wait-row"><div class="wait-line"></div><div class="wait-text">wait 15 min then eat</div><div class="wait-line"></div></div>`:'';
+    return`<div class="med-block${isDone?' done-block':''}">
+      <div class="med-block-head"><span style="font-size:18px">${step.icon}</span><span class="med-time">${step.time}</span>
+      <button class="med-check${isDone?' done':''}" onclick="toggleMed('${step.id}')">${isDone?'✓':''}</button></div>
+      <div class="med-items-list">${items}</div>${warn}</div>${after}`;
   }).join('');
 
-  document.getElementById('mainView').innerHTML=`
+  document.getElementById('todayPage').innerHTML=`
     <div class="hero">
       <div class="hero-top">
         <div><div class="hero-day">${cycleDay}</div><div class="hero-day-label">cycle day</div></div>
-        <div class="hero-right">
-          <div class="phase-chip ${pi.chipClass}">${pi.chip}</div>
-          <div class="hero-date">${dateStr}</div>
-        </div>
+        <div class="hero-right"><div class="phase-chip ${pi.chipClass}">${pi.chip}</div><div class="hero-date">${dateStr}</div></div>
       </div>
       <div class="phase-bar">${segs}</div>
       <div class="hero-summary">${pi.summary}</div>
-      <button class="period-btn" onclick="confirmPeriodReset()">🩸 My period started today — reset to Day 1</button>
+      <div id="periodResetArea">
+        <button class="period-btn" onclick="showPeriodConfirm()">🩸 My period started today — reset to Day 1</button>
+      </div>
       <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%"></div></div>
     </div>
-
     <div class="section">
-      <div class="section-head">
-        <span class="section-title">Today's workout</span>
-        <span class="section-meta">${new Date().toLocaleDateString('en-US',{weekday:'long'})}</span>
-      </div>
+      <div class="section-head"><span class="section-title">Today's workout</span><span class="section-meta">${new Date().toLocaleDateString('en-US',{weekday:'long'})}</span></div>
       ${workoutHTML}
     </div>
-
     <div class="section" style="padding-bottom:14px">
-      <div class="section-head">
-        <span class="section-title">Your protocol today</span>
-        <span class="section-meta">${done} / ${total} done</span>
-      </div>
+      <div class="section-head"><span class="section-title">Your protocol today</span><span class="section-meta">${done} / ${total} done</span></div>
       ${alert?`<div class="priority-alert">${alert}</div>`:''}
       <div class="med-stack">${medsHTML}</div>
     </div>
     <div class="footer-space"></div>`;
 }
 
-function toggleMed(id){medChecked[id]=!medChecked[id];state.medChecked=medChecked;save(state);renderMain()}
-function toggleCardio(){cardioChecked=!cardioChecked;state.cardioChecked=cardioChecked;save(state);renderMain()}
-function confirmPeriodReset(){
-  if(confirm('Reset to Day 1? This marks today as the first day of your period.')){
-    state.periodStart=todayStr();state.medChecked={};state.cardioChecked=false;
-    medChecked={};cardioChecked=false;save(state);renderMain();
+function renderCal(){
+  const todayCycleDay=getCycleDay(state.periodStart);
+  const segs=Array.from({length:28},(_,i)=>{
+    const d=i+1,phase=getPhase(d),pi=PHASE_INFO[phase];
+    const isNow=d===Math.min(todayCycleDay,28);
+    return`<div class="cal-seg" style="background:${pi.calColor};opacity:${isNow?1:0.3};${isNow?'flex:2':''}" onclick="selectCalDay(${d})" title="Day ${d}"></div>`;
+  }).join('');
+
+  const cards=Array.from({length:28},(_,i)=>{
+    const d=i+1,phase=getPhase(d),pi=PHASE_INFO[phase];
+    const workout=WORKOUT_SPLIT[d%7];
+    const isToday=d===Math.min(todayCycleDay,28);
+    const isSel=selectedCalDay===d;
+    const pp=PHASE_PROTOCOL[phase];
+    const detailHTML=`<div class="day-detail${isSel?' open':''}">
+      <div class="day-detail-section">
+        <div class="day-detail-label">Phase guidance</div>
+        <div class="day-detail-content">${pp.notes}</div>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:4px">
+          ${pp.highlights.map(h=>`<div style="font-size:12px;color:#555;padding:3px 0;padding-left:14px;position:relative"><span style="position:absolute;left:0;color:${pi.calColor}">•</span>${h}</div>`).join('')}
+        </div>
+      </div>
+      ${workout.type!=='rest'?`<div class="day-detail-section">
+        <div class="day-detail-label">Workout — ${workout.label}</div>
+        ${workout.exercises.map(e=>`<div class="ex-mini"><span>${e.name} <span style="color:#bbb">${e.sets}×${e.reps}</span></span><span class="ex-mini-equip">${e.equip}</span></div>`).join('')}
+        <div style="margin-top:6px;font-size:11px;color:#bbb">${pi.workoutNote}</div>
+      </div>`:`<div class="day-detail-section"><div class="day-detail-label">Workout</div><div class="day-detail-content">${workout.label} — ${workout.notes}</div></div>`}
+    </div>`;
+    return`<div class="day-card${isToday?' today-card':''}${isSel?' selected-card':''}" onclick="selectCalDay(${d})">
+      <div class="day-card-head">
+        <div class="day-card-num">${d}</div>
+        <div class="day-card-info">
+          <div class="day-card-phase ${pi.chipClass}">${pi.chip}</div>
+          <div class="day-card-workout">${workout.icon} ${workout.label}</div>
+        </div>
+        ${isToday?`<div class="day-card-today-badge">TODAY</div>`:`<div style="font-size:16px;color:#ddd">${isSel?'▲':'▼'}</div>`}
+      </div>
+      ${detailHTML}
+    </div>`;
+  }).join('');
+
+  document.getElementById('calPage').innerHTML=`
+    <div class="cal-header">
+      <div class="cal-title">Your cycle — 28 days</div>
+      <div class="cal-cycle-bar">${segs}</div>
+      <div class="cal-legend">
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#f59e0b"></div>Period (1–5)</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#84cc16"></div>Follicular (6–14)</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#f87171"></div>Luteal (15–28)</div>
+      </div>
+    </div>
+    <div class="day-cards-grid">${cards}</div>
+    <div class="footer-space"></div>`;
+
+  if(selectedCalDay){
+    setTimeout(()=>{
+      const el=document.querySelector('.selected-card');
+      if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
+    },100);
   }
+}
+
+function selectCalDay(d){
+  selectedCalDay=selectedCalDay===d?null:d;
+  renderCal();
+}
+
+function renderTimer(){
+  const fmt=s=>Math.floor(s/60)+':'+(s%60).toString().padStart(2,'0');
+  document.getElementById('timerPage').innerHTML=`
+    <div class="timer-page">
+      <div class="timer-title">Rest timer</div>
+      <div class="timer-sub">Tap between sets to track your rest</div>
+      <div class="timer-circle${timerRunning?' running':timerLeft===0?' finished':''}" id="tc">
+        <div class="timer-display" id="td">${fmt(timerLeft)}</div>
+      </div>
+      <div class="timer-done-msg" id="tdm">${timerLeft===0?'✓ Rest done — next set!':''}</div>
+      <div class="timer-btns">
+        <button class="timer-btn-main${timerRunning?' pause-mode':''}" onclick="toggleTimer()" id="tmb">${timerRunning?'Pause':timerLeft===0?'Done':'Start'}</button>
+        <button class="timer-btn-reset" onclick="resetTimer()">Reset</button>
+      </div>
+      <div class="timer-presets">
+        ${[60,90,120].map(s=>`<button class="preset-btn${timerDur===s?' active':''}" onclick="setPreset(${s})">${s}s</button>`).join('')}
+      </div>
+      <div class="timer-tip">
+        <strong>60–90s</strong> rest for hypertrophy (muscle growth)<br>
+        <strong>2–3 min</strong> for heavy compound lifts — hip thrusts, deadlifts<br>
+        <strong>Luteal tip:</strong> Take the full rest. Recovery slows when progesterone is low.
+      </div>
+      <div class="footer-space"></div>
+    </div>`;
+}
+
+function toggleTimer(){
+  if(timerLeft===0){resetTimer();return}
+  timerRunning=!timerRunning;
+  if(timerRunning){
+    timerInterval=setInterval(()=>{
+      timerLeft=Math.max(0,timerLeft-1);
+      const td=document.getElementById('td');
+      const tc=document.getElementById('tc');
+      const tmb=document.getElementById('tmb');
+      const tdm=document.getElementById('tdm');
+      if(td)td.textContent=Math.floor(timerLeft/60)+':'+(timerLeft%60).toString().padStart(2,'0');
+      if(timerLeft===0){
+        clearInterval(timerInterval);timerRunning=false;
+        if(tc){tc.classList.remove('running');tc.classList.add('finished')}
+        if(tmb)tmb.textContent='Done';
+        if(tdm)tdm.textContent='✓ Rest done — next set!';
+      }
+    },1000);
+  } else {
+    clearInterval(timerInterval);
+  }
+  renderTimer();
+}
+
+function resetTimer(){
+  clearInterval(timerInterval);timerRunning=false;timerLeft=timerDur;
+  renderTimer();
+}
+
+function setPreset(s){
+  clearInterval(timerInterval);timerRunning=false;timerDur=s;timerLeft=s;
+  renderTimer();
+}
+
+function toggleMed(id){medChecked[id]=!medChecked[id];state.medChecked=medChecked;save(state);renderToday()}
+function toggleCardio(){cardioChecked=!cardioChecked;state.cardioChecked=cardioChecked;save(state);renderToday()}
+
+function showPeriodConfirm(){
+  const area=document.getElementById('periodResetArea');
+  if(!area)return;
+  area.innerHTML=`<div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:12px 13px;font-size:12px;color:#7f1d1d;line-height:1.6">
+    <div style="font-weight:600;margin-bottom:8px">Reset to Day 1?</div>
+    <div style="margin-bottom:10px">This marks today as the first day of your period and resets your cycle tracking.</div>
+    <div style="display:flex;gap:8px">
+      <button onclick="doPeriodReset()" style="flex:1;padding:10px;border-radius:8px;border:none;background:#dc2626;color:#fff;font-size:13px;font-weight:600;cursor:pointer">Yes, reset to Day 1</button>
+      <button onclick="cancelPeriodReset()" style="flex:1;padding:10px;border-radius:8px;border:1px solid #e5e5e5;background:#fff;font-size:13px;color:#888;cursor:pointer">Cancel</button>
+    </div>
+  </div>`;
+}
+function doPeriodReset(){
+  state.periodStart=todayStr();state.medChecked={};state.cardioChecked=false;
+  medChecked={};cardioChecked=false;save(state);renderToday();
+}
+function cancelPeriodReset(){
+  const area=document.getElementById('periodResetArea');
+  if(area)area.innerHTML=`<button class="period-btn" onclick="showPeriodConfirm()">🩸 My period started today — reset to Day 1</button>`;
 }
 
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 }
-
 init();
 </script>
 </body>
